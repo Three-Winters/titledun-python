@@ -21,8 +21,11 @@ class MainMenu():
 
 		self.t = DirectLabel(self.f, text="Glorious title", scale=0.1, pos=(0,0, 0.9))
 
-		self.b = DirectButton(self.f, text = ("OK", "click!", "rolling over", "disabled"),
-								  scale=.15, text_scale=0.5, command=self.setText)
+		self.b = DirectButton(self.f, text = ("Exit", "click!", "rolling over", "disabled"),
+								  scale=.15, pos=(0,0, 0.1), text_scale=0.5, command=self.setText)
+
+		self.ttb = DirectButton(self.f, text=("Terrain Test"),
+									scale=.15, pos=(0,0, 0.2), text_scale=0.5, command=self.request_state)
 
 	def setText(self):
 		self.bk_text = "Button Clicked"
@@ -30,3 +33,7 @@ class MainMenu():
 		self.f.destroy()
 		Globals.game_states.request("None")
 		sys.exit()
+	def request_state(self):
+		self.f.destroy()
+		self.textObject.destroy()
+		Globals.game_states.request("TerrainTest")
