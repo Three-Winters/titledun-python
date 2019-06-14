@@ -34,6 +34,7 @@ class MyApp(ShowBase):
 		self.set_controls()
 
 		taskMgr.add(self.move, "moveTask")
+		Globals.g_task_manager = taskMgr
 
 		# Disable the camera trackball controls.
 		self.disable_mouse()
