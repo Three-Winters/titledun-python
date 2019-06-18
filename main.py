@@ -28,8 +28,6 @@ class MyApp(ShowBase):
 
 		Globals.game_states.request("MainMenu")
 
-		self.key_map = {
-			"left": 0, "right": 0, "forward": 0, "backward": 0,"cam-left": 0, "cam-right": 0, "mouse3":0}
 
 		self.set_controls()
 
@@ -38,12 +36,11 @@ class MyApp(ShowBase):
 
 		# Disable the camera trackball controls.
 		self.disable_mouse()
-		Globals.g_render = self.render
 		self.alpha = 0.0
 		self.beta = 0.0
 
 	def set_key(self, key, value):
-		self.key_map[key] = value
+		Globals.key_map[key] = value
 
 	def set_controls(self):
 		self.accept("escape", sys.exit)
@@ -68,15 +65,15 @@ class MyApp(ShowBase):
 		#dt is the time since last frame
 		dt = globalClock.get_dt()
 
-		if self.key_map["left"]:
+		if Globals.key_map["left"]:
 			self.camera.setX(self.camera.getX() - 1.0)
-		if self.key_map["right"]:
+		if Globals.key_map["right"]:
 			self.camera.setX(self.camera.getX() + 1.0)
-		if self.key_map["forward"]:
+		if Globals.key_map["forward"]:
 			self.camera.setZ(self.camera.getZ() + 1.0)
-		if self.key_map["backward"]:
+		if Globals.key_map["backward"]:
 			self.camera.setZ(self.camera.getZ() - 1.0)
-		if self.key_map["mouse3"]:
+		if Globals.key_map["mouse3"]:
 			c_x_pos = self.win.getPointer(0).getX()
 			c_y_pos = self.win.getPointer(0).getY()
 			c_x_pos -= self.r_x_pos
@@ -85,7 +82,7 @@ class MyApp(ShowBase):
 			self.beta -= c_y_pos * 0.05
 			self.camera.setHpr(self.alpha, self.beta, 0.0)
 			self.win.movePointer(0, int(self.r_x_pos), int(self.r_y_pos))
-		if not self.key_map["mouse3"]:
+		if not Globals.key_map["mouse3"]:
 			self.r_x_pos = self.win.getPointer(0).getX()
 			self.r_y_pos = self.win.getPointer(0).getY()
 		return task.cont

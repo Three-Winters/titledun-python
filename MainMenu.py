@@ -25,7 +25,12 @@ class MainMenu():
 								  scale=.15, pos=(0,0, 0.1), text_scale=0.5, command=self.setText)
 
 		self.ttb = DirectButton(self.f, text=("Terrain Test"),
-									scale=.15, pos=(0,0, 0.2), text_scale=0.5, command=self.request_state)
+									scale=.15, pos=(0,0, 0.2), text_scale=0.5, command=self.request_state,
+									extraArgs=["TerrainTest"])
+
+		self.ccb = DirectButton(self.f, text=("CharGen Test"),
+									scale=.15, pos=(0,0, 0.3), text_scale=0.5, command=self.request_state,
+									extraArgs=["CharGen"])
 
 	def setText(self):
 		self.bk_text = "Button Clicked"
@@ -33,7 +38,8 @@ class MainMenu():
 		self.f.destroy()
 		Globals.game_states.request("None")
 		sys.exit()
-	def request_state(self):
+	def request_state(self, name):
 		self.f.destroy()
 		self.textObject.destroy()
-		Globals.game_states.request("TerrainTest")
+		#Globals.game_states.request("TerrainTest")
+		Globals.game_states.request(name)

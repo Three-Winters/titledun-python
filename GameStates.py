@@ -1,6 +1,8 @@
 from direct.fsm.FSM import FSM
+
 from MainMenu import MainMenu
 from TerrainTest import TerrainTest
+from CharGen import CharGen
 
 class GameStates(FSM):
 	def __init__(self):
@@ -20,3 +22,10 @@ class GameStates(FSM):
 	def exitTerrainTest(self):
 		del self.tt
 		print("TerrainTest exited")
+
+	def enterCharGen(self):
+		self.cc = CharGen()
+		print("CharGen entered")
+	def exitCharGen(self):
+		del self.cc
+		print("CharGen exited")

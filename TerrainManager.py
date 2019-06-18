@@ -1,22 +1,31 @@
 from panda3d.core import GeoMipTerrain
 from TerrainCell import TerrainCell
 import Globals
+import json
 
 class TerrainManager:
-	def __init__(self, render):
+	def __init__(self):
 		self.test_texture = base.loader.loadTexture("grass.jpg")
 		#intialise terrain list to zeroes!
 		self.terrain_list = [[0 for x in range(16)] for y in range(16)]
 
-		tc = TerrainCell("test1", "field.png","grass.jpg", 0, 0)
-		tc.terrain.getRoot().reparentTo(render)
-		self.terrain_list[0][0] = tc
+		tc = TerrainCell()
+		#tc.configure("test1", "field.png","grass.jpg", 0, 0)
+		if tc.json_decode("test1") == True:
+			tc.create()
+			tc.terrain.getRoot().reparentTo(base.render)
+			self.terrain_list[0][0] = tc
 
-		tc = TerrainCell("test2", "field.png","grass.jpg", 1, 0)
-		tc.terrain.getRoot().reparentTo(render)
+		tc = TerrainCell()
+		#tc.configure("test2", "field.png","grass.jpg", 1, 0)
+		tc.json_decode("test2")
+		tc.create()
+		tc.terrain.getRoot().reparentTo(base.render)
 		self.terrain_list[1][0] = tc
 
 		base.taskMgr.add(self.updateTask, "update")
+
+		self.dump_to_json(self.dump_to_dic())
 
 	def updateTask(self, task):
 		for i in range(len(self.terrain_list)):
@@ -24,3 +33,16 @@ class TerrainManager:
 				if self.terrain_list[i][j]:
 					self.terrain_list[i][j].terrain.update()
 		return task.cont
+
+	def dump_to_dic(self):
+		terrain_settings = {}
+		for i in range(len(self.terrain_list)):
+			for j in range(len(self.terrain_list[i])):
+				if self.terrain_list[i][j]:
+					terrain_settings[self.terrain_list[i][j].settings["name"]] \
+					  = self.terrain_list[i][j].settings
+		return(terrain_settings)
+
+	def dump_to_json(self, dic):
+		with open("terrains.json", "w") as write_file:
+			json.dump(dic, write_file, indent=4)

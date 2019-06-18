@@ -4,4 +4,4 @@ from TerrainManager import TerrainManager
 class TerrainTest():
 	def __init__(self):
 		print("TerrainTest object created")
-		self.tm = TerrainManager(Globals.g_render)
+		self.tm = TerrainManager()
