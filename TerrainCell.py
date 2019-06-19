@@ -20,9 +20,10 @@ class TerrainCell:
 		self.terrain.setHeightfield(self.settings["heightmap"])
 
 		# Set terrain properties
+		self.terrain.setBruteforce(False)
 		self.terrain.setBlockSize(32)
-		self.terrain.setNear(40)
-		self.terrain.setFar(100)
+		self.terrain.setNear(3)
+		self.terrain.setFar(10)
 		self.terrain.setFocalPoint(base.camera)
 		self.terrain.setBorderStitching(True)
 
