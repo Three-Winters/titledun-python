@@ -1,5 +1,7 @@
 from panda3d.core import GeoMipTerrain
 
+import Globals
+
 import json
 
 class TerrainCell:
@@ -22,15 +24,17 @@ class TerrainCell:
 		# Set terrain properties
 		self.terrain.setBruteforce(False)
 		self.terrain.setBlockSize(32)
-		self.terrain.setNear(3)
-		self.terrain.setFar(10)
+		self.terrain.setNear(40)
+		self.terrain.setFar(100)
+		#self.terrain.setMinLevel(16)
 		self.terrain.setFocalPoint(base.camera)
 		self.terrain.setBorderStitching(True)
 
 		self.terrain.getRoot().setSz(300)
-		self.terrain.getRoot().setSx(8)
-		self.terrain.getRoot().setSy(8)
-		self.terrain.getRoot().setPos((self.settings["x"]*512)*8, (self.settings["y"]*512)*8, 0)
+		self.terrain.getRoot().setSx(Globals.TERRAIN_MULT)
+		self.terrain.getRoot().setSy(Globals.TERRAIN_MULT)
+		self.terrain.getRoot().setPos((self.settings["x"]*512)*Globals.TERRAIN_MULT, \
+										  (self.settings["y"]*512)*Globals.TERRAIN_MULT, 0)
 		self.terrain.getRoot().setTexture(self.test_texture)
 		self.terrain.generate()
 

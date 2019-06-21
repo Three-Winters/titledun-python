@@ -17,6 +17,7 @@ import panda3d.core
 
 
 import Globals
+from Controls import Controls
 
 class MyApp(ShowBase):
 	def __init__(self):
@@ -28,37 +29,9 @@ class MyApp(ShowBase):
 
 		Globals.game_states.request("MainMenu")
 
-
-		self.set_controls()
-
 		taskMgr.add(self.move, "moveTask")
 		Globals.g_task_manager = taskMgr
-
-		# Disable the camera trackball controls.
-		self.disable_mouse()
-		self.alpha = 0.0
-		self.beta = 0.0
-
-	def set_key(self, key, value):
-		Globals.key_map[key] = value
-
-	def set_controls(self):
-		self.accept("escape", sys.exit)
-		self.accept("mouse3", self.set_key, ["mouse3", True])
-		self.accept("arrow_left", self.set_key, ["left", True])
-		self.accept("arrow_right", self.set_key, ["right", True])
-		self.accept("arrow_up", self.set_key, ["forward", True])
-		self.accept("arrow_down", self.set_key, ["backward", True])
-		self.accept("a", self.set_key, ["cam-left", True])
-		self.accept("s", self.set_key, ["cam-right", True])
-
-		self.accept("arrow_left-up", self.set_key, ["left", False])
-		self.accept("arrow_right-up", self.set_key, ["right", False])
-		self.accept("arrow_up-up", self.set_key, ["forward", False])
-		self.accept("arrow_down-up", self.set_key, ["backward", False])
-		self.accept("mouse3-up", self.set_key, ["mouse3", False])
-		self.accept("a-up", self.set_key, ["cam-left", False])
-		self.accept("s-up", self.set_key, ["cam-right", False])
+		self.cons = Controls()
 
 	def move(self, task):
 
@@ -66,21 +39,21 @@ class MyApp(ShowBase):
 		dt = globalClock.get_dt()
 
 		if Globals.key_map["left"]:
-			self.camera.setX(self.camera.getX() - 1.0)
+			self.camera.setX(self.camera.getX() - 5.0)
 		if Globals.key_map["right"]:
-			self.camera.setX(self.camera.getX() + 1.0)
+			self.camera.setX(self.camera.getX() + 5.0)
 		if Globals.key_map["forward"]:
-			self.camera.setZ(self.camera.getZ() + 1.0)
+			self.camera.setZ(self.camera.getZ() + 5.0)
 		if Globals.key_map["backward"]:
-			self.camera.setZ(self.camera.getZ() - 1.0)
+			self.camera.setZ(self.camera.getZ() - 5.0)
 		if Globals.key_map["mouse3"]:
 			c_x_pos = self.win.getPointer(0).getX()
 			c_y_pos = self.win.getPointer(0).getY()
 			c_x_pos -= self.r_x_pos
 			c_y_pos -= self.r_y_pos
-			self.alpha -= c_x_pos * 0.05
-			self.beta -= c_y_pos * 0.05
-			self.camera.setHpr(self.alpha, self.beta, 0.0)
+			self.cons.alpha -= c_x_pos * 0.05
+			self.cons.beta -= c_y_pos * 0.05
+			self.camera.setHpr(self.cons.alpha, self.cons.beta, 0.0)
 			self.win.movePointer(0, int(self.r_x_pos), int(self.r_y_pos))
 		if not Globals.key_map["mouse3"]:
 			self.r_x_pos = self.win.getPointer(0).getX()
