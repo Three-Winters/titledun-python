@@ -53,3 +53,6 @@ class TerrainCell:
 				return(False)
 			else:
 				return(True)
+
+	def bam_encode(self):
+		self.terrain.getRoot().writeBamFile(self.settings["name"])
