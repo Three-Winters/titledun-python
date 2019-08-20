@@ -1,5 +1,7 @@
 import Globals
 from TerrainManager import TerrainManager
+from math import sin
+from math import cos
 
 from direct.actor.Actor import Actor
 
@@ -20,6 +22,7 @@ class TerrainTest():
 		self.pc.reparentTo(base.render)
 		self.pc.setPos(0,0,0)
 		base.camera.reparentTo(self.pc)
+		base.camera.setPos(0, 0, 0)
 
 	def move(self, task):
 
@@ -45,10 +48,12 @@ class TerrainTest():
 			base.camera.setHpr(Globals.controls.alpha, Globals.controls.beta, 0.0)
 			base.win.movePointer(0, int(self.r_x_pos), int(self.r_y_pos))
 
+			camera_dist = 3000
+			camera_z_dist = 100
 			#rotate camera around the node
-			base.camera.setPos(self.pc, sin(Globals.controls.alpha*Globals.DEG_TO_RAD*3),
-								   cos(Globals.controls.alpha*Globals.DEG_TO_RAD*-3),
-								   cos(Globals.controls.beta*Globals.DEG_TO_RAD))
+			base.camera.setPos(sin(Globals.controls.alpha*Globals.DEG_TO_RAD)*abs(camera_dist),
+								   cos(Globals.controls.alpha*Globals.DEG_TO_RAD)*-(abs(camera_dist)),
+								   cos(Globals.controls.beta*Globals.DEG_TO_RAD)*camera_z_dist)
 
 		if not Globals.key_map["mouse3"]:
 			self.r_x_pos = base.win.getPointer(0).getX()
