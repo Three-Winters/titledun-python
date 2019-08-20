@@ -3,8 +3,6 @@ from TerrainCell import TerrainCell
 import Globals
 import json
 
-from direct.actor.Actor import Actor
-
 class TerrainManager:
 	def __init__(self):
 		self.test_texture = base.loader.loadTexture("grass.jpg")
@@ -22,12 +20,6 @@ class TerrainManager:
 		self.make_cell("2-2", "field.png", "grass.jpg", 2, 2)
 
 		base.taskMgr.add(self.updateTask, "update")
-
-		self.pc = Actor("models/panda-model", {"walk": "models/panda-walk4"})
-		self.pc.setScale(0.005, 0.005, 0.005)
-		self.pc.reparentTo(base.render)
-		self.pc.setPos(0,0,0)
-		base.camera.reparentTo(self.pc)
 
 	def updateTask(self, task):
 		for i in range(len(self.terrain_list)):

@@ -27,14 +27,11 @@ class MyApp(ShowBase):
 		self.win.request_properties(props)
 		self.win.set_clear_color((0, 0, 0, 1))
 
-
 		Globals.game_states.request("MainMenu")
 
-		#taskMgr.add(self.move, "moveTask")
 		Globals.g_task_manager = taskMgr
-		Globals.win = self.win
+		#Globals.win = self.win
 		Globals.controls = Controls()
-		Globals.camera = self.camera
 
 app = MyApp()
 app.run()
