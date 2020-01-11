@@ -1,4 +1,7 @@
+# Main executable file
 from math import pi, sin, cos
+
+#import optpoarse
 
 import sys
 import os
@@ -14,7 +17,6 @@ from direct.gui.DirectGui import DirectLabel
 from panda3d.core import TextNode
 from panda3d.core import Point3
 import panda3d.core
-
 
 import Globals
 from Controls import Controls

@@ -1,20 +1,41 @@
 import Globals
+import Collider
 from TerrainManager import TerrainManager
 from math import sin
 from math import cos
 
 from direct.actor.Actor import Actor
 
-class TerrainTest():
+from panda3d.core import CollisionCapsule
+from panda3d.core import CollisionSphere
+from panda3d.core import CollisionNode
+from panda3d.core import CollisionTraverser
+from panda3d.core import CollisionHandlerEvent
+from direct.showbase.DirectObject import DirectObject
+
+quick_collisions = True
+
+class TerrainTest(DirectObject):
 	def __init__(self):
 		print("TerrainTest object created")
-		self.tm = TerrainManager()
+		self.make_traverser_handler()
+		self.tm = TerrainManager(16, 16)
 		self.make_actor()
 		Globals.g_task_manager.add(self.move, "moveTask")
 
-	#test this below
 	def __del__(self):
+		print("Removed moveTask")
 		Globals.g_task_manager.remove("moveTask")
+
+	def hanev(self, col_entry):
+		print("collided")
+
+	def make_traverser_handler(self):
+		base.cTrav = CollisionTraverser()
+		base.mchandler = CollisionHandlerEvent()
+		base.mchandler.addInPattern('into-%in')
+		base.mchandler.addAgainPattern('%fn-again-%in')
+		base.mchandler.addOutPattern('out-%in')
 
 	def make_actor(self):
 		self.pc_node = base.render.attachNewNode("pcnode")
@@ -27,6 +48,33 @@ class TerrainTest():
 		base.camera.reparentTo(self.pc_node)
 		base.camLens.setFar(500000000000.0)
 		base.camera.setPos(0, 0, 0)
+
+		self.make_actor_collisions(self.pc)
+		self.make_test_capsule()
+
+	def make_test_capsule(self):
+		cap = CollisionCapsule(100, 100, 100, 100, 100, 100, 100)
+		self.collision_node = base.render.attachNewNode(CollisionNode('cap1'))
+		self.collision_node.node().addSolid(cap)
+		self.collision_node.show()
+		self.accept('into-cap1', self.hanev)
+		self.accept('out-cap1', self.hanev)
+
+		base.cTrav.addCollider(self.collision_node, base.mchandler)
+
+		self.collision_node.setPos(10, 0, -3)
+
+	def make_actor_collisions(self, actor):
+		pcol = CollisionCapsule(0, 0, 0, 0, 0, 400, 400)
+		self.collision_node = actor.attachNewNode(CollisionNode('pcol'))
+		self.collision_node.node().addSolid(pcol)
+		self.collision_node.show()
+		self.collision_node.setHpr(0, 90, 0)
+		self.collision_node.setPos(0, 0, 300)
+		self.accept('into-pcol', self.hanev)
+		self.accept('out-pcol', self.hanev)
+
+		base.cTrav.addCollider(self.collision_node, base.mchandler)
 
 	def move(self, task):
 
@@ -91,7 +139,18 @@ class TerrainTest():
 
 
 		#Set the new position and rotation
-		self.pc.setPos(new_x, new_y, new_z)
-		#self.pc_node.setHpr(new_head, 0, 0)
-		self.pc.setHpr(new_head, Globals.controls.beta, 0.0)
-		return task.cont
+		#self.pc.setPos(new_x, new_y, new_z)
+
+		#ele, norm = self.tm.get_terrain(0, 0).fast_cols(new_x, new_y)
+		elev, norm = self.tm.get_terrain(0, 0).fast_cols(int(new_x/Globals.TERRAIN_MULT), int(new_y/Globals.TERRAIN_MULT))
+		self.pc.setHpr(new_head, norm.x, 0)
+		self.pc.setPos(new_x, new_y, elev*300)
+		return(task.cont)
+
+	def gravity(self, task, elevation, node):
+		zpos = node.getZ()
+		if elevation*300 =< zpos:
+			zpos -= zpos - 1
+			node.setZ(zpos)
+
+		return(task.cont)

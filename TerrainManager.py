@@ -4,20 +4,20 @@ import Globals
 import json
 
 class TerrainManager:
-	def __init__(self):
+	def __init__(self, world_x, world_y):
 		self.test_texture = base.loader.loadTexture("grass.jpg")
 		#intialise terrain list to zeroes!
-		self.terrain_list = [[0 for x in range(16)] for y in range(16)]
+		self.terrain_list = [[0 for x in range(world_x)] for y in range(world_y)]
 
 		self.make_cell("0-0", "field.png", "grass.jpg", 0, 0)
-		self.make_cell("0-1", "field.png", "grass.jpg", 0, 1)
-		self.make_cell("0-2", "field.png", "grass.jpg", 0, 2)
-		self.make_cell_json("1-0")
-		self.make_cell("1-1", "field.png", "grass.jpg", 1, 1)
-		self.make_cell("1-2", "field.png", "grass.jpg", 1, 2)
-		self.make_cell("2-0", "field.png", "grass.jpg", 2, 0)
-		self.make_cell("2-1", "field.png", "grass.jpg", 2, 1)
-		self.make_cell("2-2", "field.png", "grass.jpg", 2, 2)
+		#self.make_cell("0-1", "field.png", "grass.jpg", 0, 1)
+		#self.make_cell("0-2", "field.png", "grass.jpg", 0, 2)
+		#self.make_cell_json("1-0")
+		#self.make_cell("1-1", "field.png", "grass.jpg", 1, 1)
+		#self.make_cell("1-2", "field.png", "grass.jpg", 1, 2)
+		#self.make_cell("2-0", "field.png", "grass.jpg", 2, 0)
+		#self.make_cell("2-1", "field.png", "grass.jpg", 2, 1)
+		#self.make_cell("2-2", "field.png", "grass.jpg", 2, 2)
 
 		base.taskMgr.add(self.updateTask, "update")
 
@@ -57,3 +57,11 @@ class TerrainManager:
 			tc.create()
 			tc.terrain.getRoot().reparentTo(base.render)
 			self.terrain_list[tc.settings["x"]][tc.settings["y"]] = tc
+
+	def get_terrain(self, x, y):
+		return(self.terrain_list[x][y])
+
+	def unload_cell(self, posx, posy):
+		tc = self.get_terrain(posx, posy)
+		# Test memory reclaimation
+		tc.removeNode()
