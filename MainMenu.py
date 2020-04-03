@@ -32,6 +32,12 @@ class MainMenu():
 									scale=.15, pos=(0,0, 0.3), text_scale=0.5, command=self.request_state,
 									extraArgs=["CharGen"])
 
+		self.nt = DirectButton(self.f, text=("Network Test"),
+								   scale=.15, pos=(0,0, 0.4), text_scale=0.5, command=self.request_state,
+								   extraArgs=["NetworkTest"])
+
+		#self.nt
+
 	def setText(self):
 		self.bk_text = "Button Clicked"
 		self.textObject.setText(self.bk_text)

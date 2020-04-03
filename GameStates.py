@@ -4,6 +4,7 @@ from State import State
 from MainMenu import MainMenu
 from TerrainTest import TerrainTest
 from CharGen import CharGen
+from NetworkTest import NetworkTest
 
 class GameStates(FSM):
 	def __init__(self):
@@ -47,3 +48,10 @@ class GameStates(FSM):
 	def exitCharGen(self):
 		del self.cc
 		print("CharGen exited")
+
+	def enterNetworkTest(self):
+		self.nt = NetworkTest()
+		print("NetworkTest entered")
+	def exitNetworkTest(self):
+		del self.nt
+		print("NetworkTest exited")

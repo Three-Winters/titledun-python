@@ -149,7 +149,7 @@ class TerrainTest(DirectObject):
 
 	def gravity(self, task, elevation, node):
 		zpos = node.getZ()
-		if elevation*300 =< zpos:
+		if elevation*300 <= zpos:
 			zpos -= zpos - 1
 			node.setZ(zpos)
 
