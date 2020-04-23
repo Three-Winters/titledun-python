@@ -13,6 +13,8 @@ from panda3d.core import CollisionTraverser
 from panda3d.core import CollisionHandlerEvent
 from direct.showbase.DirectObject import DirectObject
 
+from direct.task.Task import Task
+
 quick_collisions = True
 
 class TerrainTest(DirectObject):
@@ -22,6 +24,8 @@ class TerrainTest(DirectObject):
 		self.tm = TerrainManager(16, 16)
 		self.make_actor()
 		Globals.g_task_manager.add(self.move, "moveTask")
+		self.task1 = Task(self.gravity)
+		Globals.g_task_manager.add(self.task1, "gravityTask", extraArgs=[self.task1, self.pc])
 
 	def __del__(self):
 		print("Removed moveTask")
@@ -144,13 +148,23 @@ class TerrainTest(DirectObject):
 		#ele, norm = self.tm.get_terrain(0, 0).fast_cols(new_x, new_y)
 		elev, norm = self.tm.get_terrain(0, 0).fast_cols(int(new_x/Globals.TERRAIN_MULT), int(new_y/Globals.TERRAIN_MULT))
 		self.pc.setHpr(new_head, norm.x, 0)
-		self.pc.setPos(new_x, new_y, elev*300)
+		self.pc.setPos(new_x, new_y, new_z)
 		return(task.cont)
 
-	def gravity(self, task, elevation, node):
+	def get_elevation(self, x, y):
+		return(self.tm.get_terrain(0, 0).getElevation(x*Globals.TERRAIN_MULT, y*Globals.TERRAIN_MULT))
+
+	def gravity(self, task, node):
 		zpos = node.getZ()
-		if elevation*300 <= zpos:
-			zpos -= zpos - 1
+		tcell = self.tm.get_terrain(0, 0)
+		elevation = tcell.terrain.get_elevation(node.getX()/Globals.TERRAIN_MULT, node.getY()/Globals.TERRAIN_MULT)*300
+		if elevation == zpos:
+			1+1
+		elif elevation < zpos:
+		#zpos -= zpos - 1
+			zpos = zpos - 1
 			node.setZ(zpos)
+		else:
+			node.setZ(elevation)
 
 		return(task.cont)
