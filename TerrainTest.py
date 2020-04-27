@@ -1,6 +1,9 @@
 import Globals
 import Collider
+
 from TerrainManager import TerrainManager
+from Character import Character
+
 from math import sin
 from math import cos
 
@@ -22,7 +25,11 @@ class TerrainTest(DirectObject):
 		print("TerrainTest object created")
 		self.make_traverser_handler()
 		self.tm = TerrainManager(16, 16)
-		self.make_actor()
+
+		#self.make_actor()
+		char = Character("pandabuddy")
+		self.pc = char.panda_actor
+
 		Globals.g_task_manager.add(self.move, "moveTask")
 		self.task1 = Task(self.gravity)
 		Globals.g_task_manager.add(self.task1, "gravityTask", extraArgs=[self.task1, self.pc])
@@ -149,6 +156,11 @@ class TerrainTest(DirectObject):
 		elev, norm = self.tm.get_terrain(0, 0).fast_cols(int(new_x/Globals.TERRAIN_MULT), int(new_y/Globals.TERRAIN_MULT))
 		self.pc.setHpr(new_head, norm.x, 0)
 		self.pc.setPos(new_x, new_y, new_z)
+
+		cell_x = int((self.pc.getX()/4)/512)
+		cell_y = int((self.pc.getY()/4)/512)
+
+		print("POSITION: "+str(cell_x)+", "+str(cell_y))
 		return(task.cont)
 
 	def get_elevation(self, x, y):
