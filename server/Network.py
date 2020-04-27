@@ -67,4 +67,4 @@ class Network():
 
 	def unlisten(self):
 		print("Stopping listen")
-		self.c_listener.closeConnection(self.tcp_socket)
+		self.c_manager.closeConnection(self.tcp_socket)
