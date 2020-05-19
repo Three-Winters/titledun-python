@@ -12,7 +12,7 @@ class TerrainManager:
 		self.make_cell("0-0", "field.png", "grass.jpg", 0, 0)
 		#self.make_cell("0-1", "field.png", "grass.jpg", 0, 1)
 		#self.make_cell("0-2", "field.png", "grass.jpg", 0, 2)
-		#self.make_cell_json("1-0")
+		self.make_cell_json("1-0")
 		#self.make_cell("1-1", "field.png", "grass.jpg", 1, 1)
 		#self.make_cell("1-2", "field.png", "grass.jpg", 1, 2)
 		#self.make_cell("2-0", "field.png", "grass.jpg", 2, 0)

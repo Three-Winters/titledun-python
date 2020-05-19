@@ -25,7 +25,7 @@ class Controls():
 		base.accept("a", self.set_key, ["cam-left", True])
 		base.accept("s", self.set_key, ["cam-right", True])
 
-		base.accept("arrow_left-up", self.set_key, ["left", False])
+		base.accept("arrow_left-up", self.set_key, ["left", 2])
 		base.accept("arrow_right-up", self.set_key, ["right", False])
 		base.accept("arrow_up-up", self.set_key, ["forward", False])
 		base.accept("arrow_down-up", self.set_key, ["backward", False])

@@ -17,12 +17,14 @@ from direct.gui.DirectGui import DirectLabel
 from panda3d.core import TextNode
 from panda3d.core import Point3
 import panda3d.core
+from panda3d.core import PandaSystem
 
 import Globals
 from Controls import Controls
 
 class MyApp(ShowBase):
 	def __init__(self):
+		print("We are running version "+PandaSystem.getVersionString()+" of Panda3d")
 		ShowBase.__init__(self)
 		props = panda3d.core.WindowProperties()
 		props.set_title("Demo")
